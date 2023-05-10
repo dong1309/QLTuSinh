@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="QLTuSinhModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="KHOA_TU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MA_KHOA_TU" Type="varchar" MaxLength="64" />
+          <Property Name="TEN_KHOA_TU" Type="nvarchar" MaxLength="128" />
+          <Property Name="NGAY_BAT_DAU" Type="date" />
+          <Property Name="NGAY_KET_THUC" Type="date" />
+          <Property Name="MIEU_TA" Type="nvarchar" MaxLength="50" />
+          <Property Name="TRANG_THAI" Type="bit" />
+        </EntityType>
+        <EntityType Name="PHONG_NGU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MA_PHONG" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="TEN_PHONG" Type="nvarchar" MaxLength="128" />
+          <Property Name="LOAI_PHONG" Type="bit" />
+          <Property Name="KICH_THUOC" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TAI_KHOAN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USERNAME" Type="varchar" MaxLength="64" />
+          <Property Name="PASSWORD" Type="varchar" MaxLength="64" />
+          <Property Name="IS_ADMIN" Type="bit" />
+        </EntityType>
+        <EntityType Name="TU_SINH">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SO_THE" Type="varchar" MaxLength="50" />
+          <Property Name="HO_TEN" Type="nvarchar" MaxLength="50" />
+          <Property Name="NAM_SINH" Type="int" />
+          <Property Name="GIOI_TINH" Type="bit" />
+          <Property Name="TEN_PHU_HUYNH" Type="nvarchar" MaxLength="50" />
+          <Property Name="SDT" Type="varchar" MaxLength="50" />
+          <Property Name="QUE_QUAN" Type="nvarchar" MaxLength="50" />
+          <Property Name="ID_PHONG" Type="int" />
+          <Property Name="ID_KHOA_TU" Type="int" />
+        </EntityType>
+        <Association Name="FK_TU_SINH_KHOA_TU">
+          <End Role="KHOA_TU" Type="Self.KHOA_TU" Multiplicity="0..1" />
+          <End Role="TU_SINH" Type="Self.TU_SINH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KHOA_TU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TU_SINH">
+              <PropertyRef Name="ID_KHOA_TU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TU_SINH_PHONG_NGU">
+          <End Role="PHONG_NGU" Type="Self.PHONG_NGU" Multiplicity="0..1" />
+          <End Role="TU_SINH" Type="Self.TU_SINH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHONG_NGU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TU_SINH">
+              <PropertyRef Name="ID_PHONG" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLTuSinhModelStoreContainer">
+          <EntitySet Name="KHOA_TU" EntityType="Self.KHOA_TU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PHONG_NGU" EntityType="Self.PHONG_NGU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TAI_KHOAN" EntityType="Self.TAI_KHOAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TU_SINH" EntityType="Self.TU_SINH" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TU_SINH_KHOA_TU" Association="Self.FK_TU_SINH_KHOA_TU">
+            <End Role="KHOA_TU" EntitySet="KHOA_TU" />
+            <End Role="TU_SINH" EntitySet="TU_SINH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TU_SINH_PHONG_NGU" Association="Self.FK_TU_SINH_PHONG_NGU">
+            <End Role="PHONG_NGU" EntitySet="PHONG_NGU" />
+            <End Role="TU_SINH" EntitySet="TU_SINH" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLTuSinhModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="QLTuSinhEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="KHOA_TU" EntityType="QLTuSinhModel.KHOA_TU" />
+          <EntitySet Name="PHONG_NGU" EntityType="QLTuSinhModel.PHONG_NGU" />
+          <EntitySet Name="sysdiagrams" EntityType="QLTuSinhModel.sysdiagram" />
+          <EntitySet Name="TAI_KHOAN" EntityType="QLTuSinhModel.TAI_KHOAN" />
+          <EntitySet Name="TU_SINH" EntityType="QLTuSinhModel.TU_SINH" />
+          <AssociationSet Name="FK_TU_SINH_KHOA_TU" Association="QLTuSinhModel.FK_TU_SINH_KHOA_TU">
+            <End Role="KHOA_TU" EntitySet="KHOA_TU" />
+            <End Role="TU_SINH" EntitySet="TU_SINH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TU_SINH_PHONG_NGU" Association="QLTuSinhModel.FK_TU_SINH_PHONG_NGU">
+            <End Role="PHONG_NGU" EntitySet="PHONG_NGU" />
+            <End Role="TU_SINH" EntitySet="TU_SINH" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="KHOA_TU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MA_KHOA_TU" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="TEN_KHOA_TU" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="NGAY_BAT_DAU" Type="DateTime" Precision="0" />
+          <Property Name="NGAY_KET_THUC" Type="DateTime" Precision="0" />
+          <Property Name="MIEU_TA" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TRANG_THAI" Type="Boolean" />
+          <NavigationProperty Name="TU_SINH" Relationship="QLTuSinhModel.FK_TU_SINH_KHOA_TU" FromRole="KHOA_TU" ToRole="TU_SINH" />
+        </EntityType>
+        <EntityType Name="PHONG_NGU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MA_PHONG" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="TEN_PHONG" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LOAI_PHONG" Type="Boolean" />
+          <Property Name="KICH_THUOC" Type="Int32" />
+          <NavigationProperty Name="TU_SINH" Relationship="QLTuSinhModel.FK_TU_SINH_PHONG_NGU" FromRole="PHONG_NGU" ToRole="TU_SINH" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TAI_KHOAN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USERNAME" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="PASSWORD" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="IS_ADMIN" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="TU_SINH">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SO_THE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HO_TEN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NAM_SINH" Type="Int32" />
+          <Property Name="GIOI_TINH" Type="Boolean" />
+          <Property Name="TEN_PHU_HUYNH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SDT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="QUE_QUAN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ID_PHONG" Type="Int32" />
+          <Property Name="ID_KHOA_TU" Type="Int32" />
+          <NavigationProperty Name="KHOA_TU" Relationship="QLTuSinhModel.FK_TU_SINH_KHOA_TU" FromRole="TU_SINH" ToRole="KHOA_TU" />
+          <NavigationProperty Name="PHONG_NGU" Relationship="QLTuSinhModel.FK_TU_SINH_PHONG_NGU" FromRole="TU_SINH" ToRole="PHONG_NGU" />
+        </EntityType>
+        <Association Name="FK_TU_SINH_KHOA_TU">
+          <End Type="QLTuSinhModel.KHOA_TU" Role="KHOA_TU" Multiplicity="0..1" />
+          <End Type="QLTuSinhModel.TU_SINH" Role="TU_SINH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KHOA_TU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TU_SINH">
+              <PropertyRef Name="ID_KHOA_TU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TU_SINH_PHONG_NGU">
+          <End Type="QLTuSinhModel.PHONG_NGU" Role="PHONG_NGU" Multiplicity="0..1" />
+          <End Type="QLTuSinhModel.TU_SINH" Role="TU_SINH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PHONG_NGU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TU_SINH">
+              <PropertyRef Name="ID_PHONG" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLTuSinhModelStoreContainer" CdmEntityContainer="QLTuSinhEntities">
+          <EntitySetMapping Name="KHOA_TU">
+            <EntityTypeMapping TypeName="QLTuSinhModel.KHOA_TU">
+              <MappingFragment StoreEntitySet="KHOA_TU">
+                <ScalarProperty Name="TRANG_THAI" ColumnName="TRANG_THAI" />
+                <ScalarProperty Name="MIEU_TA" ColumnName="MIEU_TA" />
+                <ScalarProperty Name="NGAY_KET_THUC" ColumnName="NGAY_KET_THUC" />
+                <ScalarProperty Name="NGAY_BAT_DAU" ColumnName="NGAY_BAT_DAU" />
+                <ScalarProperty Name="TEN_KHOA_TU" ColumnName="TEN_KHOA_TU" />
+                <ScalarProperty Name="MA_KHOA_TU" ColumnName="MA_KHOA_TU" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PHONG_NGU">
+            <EntityTypeMapping TypeName="QLTuSinhModel.PHONG_NGU">
+              <MappingFragment StoreEntitySet="PHONG_NGU">
+                <ScalarProperty Name="KICH_THUOC" ColumnName="KICH_THUOC" />
+                <ScalarProperty Name="LOAI_PHONG" ColumnName="LOAI_PHONG" />
+                <ScalarProperty Name="TEN_PHONG" ColumnName="TEN_PHONG" />
+                <ScalarProperty Name="MA_PHONG" ColumnName="MA_PHONG" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="QLTuSinhModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TAI_KHOAN">
+            <EntityTypeMapping TypeName="QLTuSinhModel.TAI_KHOAN">
+              <MappingFragment StoreEntitySet="TAI_KHOAN">
+                <ScalarProperty Name="IS_ADMIN" ColumnName="IS_ADMIN" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TU_SINH">
+            <EntityTypeMapping TypeName="QLTuSinhModel.TU_SINH">
+              <MappingFragment StoreEntitySet="TU_SINH">
+                <ScalarProperty Name="ID_KHOA_TU" ColumnName="ID_KHOA_TU" />
+                <ScalarProperty Name="ID_PHONG" ColumnName="ID_PHONG" />
+                <ScalarProperty Name="QUE_QUAN" ColumnName="QUE_QUAN" />
+                <ScalarProperty Name="SDT" ColumnName="SDT" />
+                <ScalarProperty Name="TEN_PHU_HUYNH" ColumnName="TEN_PHU_HUYNH" />
+                <ScalarProperty Name="GIOI_TINH" ColumnName="GIOI_TINH" />
+                <ScalarProperty Name="NAM_SINH" ColumnName="NAM_SINH" />
+                <ScalarProperty Name="HO_TEN" ColumnName="HO_TEN" />
+                <ScalarProperty Name="SO_THE" ColumnName="SO_THE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

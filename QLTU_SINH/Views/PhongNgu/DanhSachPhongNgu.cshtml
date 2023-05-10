@@ -1,0 +1,178 @@
+﻿
+@{
+    ViewBag.Title = "DanhSachPhongNgu";
+}
+
+<h2>DanhSachPhongNgu</h2>
+
+@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+<script src="~/Content/JS/PhongNguCtrl.js"></script>
+
+<div ng-app="myApp" ng-controller="PhongNguCtrl">
+   
+    <div class="col-md-12" style="margin:10px 0">
+        <div class="list-content">
+            <div class="col-md-9" style="color: red; font-size:14px;">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h2 style="color:blue;">Danh Sách Phòng Ngủ</h2>
+                    </div>
+
+               
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <button style="float:left" type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddDanhMuc">Thêm mới</button>
+                <div class="table table-responsive">
+                    <table class="table w-100" style="background-color:transparent">
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="10%">STT</thwidth="10%">
+                                <th class="text-center" width="15%">Mã Phòng Ngủ</th>
+                                <th class="text-center" width="15%">Tên phòng ngủ</th>
+                                <th class="text-center" width="15%">Loại phòng</th>
+                                <th class="text-center" width="15%">Kích Thước</th>
+                              
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in ListPhongNgu ">
+                                <td>{{$index+1}}</td>
+                                <td class="text-left">{{item.MA_PHONG}}</td>
+                                <td class="text-left">{{item.TEN_PHONG}}</td>
+                                <td class="text-left">{{item.LOAI_PHONG == 1? 'Nam':'Nữ'}}</td>
+                                <td class="text-left">{{item.KICH_THUOC}}</td>
+
+                                <td>
+                                    <button class="btn btn-primary" ng-click="GetDM(item)" data-toggle="modal" data-target="#SuaDanhMuc">Sửa</button>
+                                    <button class="btn btn-danger" ng-click="XoaPhong(item.MA_PHONG)">Xoá</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn btn-primary" ng-click="XuatExcel()">Xuất excel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="AddDanhMuc" role="dialog" tabindex="-1" style="overflow-x: auto; overflow-y: auto; ">
+        <div class="modal-dialog modal-lg" style="max-width:99%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm mới nhân viên</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table style="width: 100%; text-align: left">
+                        <tr>
+                            <td>Mã Phòng Ngủ :</td>
+                            <td><input type="text" class="form-control" ng-model="maphong" /></td>
+                        </tr>
+                        <tr>
+                            <td>Tên Phòng Ngủ</td>
+                            <td><input type="text" class="form-control" ng-model="tenphong" /></td>
+                        </tr>
+
+                        <tr>
+                            <td  >Loại Phòng:</td>
+                            <td><select ng-model="loaiphong"  class="form-control">
+                                <option ng-value="1">
+                                    Nam
+                                </option>
+                                <option ng-value="0">
+                                    Nữ
+                                </option>
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td>Số Lượng Người</td>
+                            <td><input type="text" class="form-control" ng-model="kichthuoc" /></td>
+                        </tr>
+                      
+
+
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+                    <button type="button" class="btn btn-primary" ng-click="AddDanhMucKho()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="SuaDanhMuc" role="dialog">
+        <div class="modal-dialog modal-lg " style="width:85%">
+            <div class="modal-content ">
+                <div class="modal-header ">
+                    <h4 class="modal-title text-bold" id="myModalLabel" style="background-color:#0b4645db;">THÔNG TIN DANH MỤC</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover ">
+                        <tr>
+                            <td>Mã Phòng Ngủ </td>
+                            <td>
+                                <input type="text" class="form-control input-form  ng-pristine ng-untouched ng-valid ng-empty" ng-model="dm.MA_PHONG">
+                            </td>
+
+                            @*ng-disabled="true"*@
+                        </tr>
+
+                        <tr>
+                            <td>Tên Phòng Ngủ</td>
+                            <td>
+                                <input type="text" class="form-control input-form ng-pristine ng-untouched ng-valid ng-empty" ng-model="dm.TEN_PHONG">
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>Loại Phòng:</td>
+                            <td>
+                                <select ng-model="dm.LOAI_PHONG" class="form-control">
+                                    <option ng-value="1">
+                                        Nam
+                                    </option>
+                                    <option ng-value="0">
+                                        Nữ
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Số Lượng Người</td>
+                            <td>
+                                <input type="text" class="form-control input-form ng-pristine ng-untouched ng-valid ng-empty" ng-model="dm.KICH_THUOC">
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-success" ng-click="SaveDanhMuc(dm)">Cập nhật</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-danger"><img src="~/Content/Images/icon/none.png" width="20" style="position:relative;top:3px;margin-right:5px" />Exit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .col-md-2 {
+        width: 99.666667%;
+    }
+</style>

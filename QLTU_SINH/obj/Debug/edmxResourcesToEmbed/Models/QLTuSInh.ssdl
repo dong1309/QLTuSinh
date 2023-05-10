@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="QLTuSinhModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="KHOA_TU">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MA_KHOA_TU" Type="varchar" MaxLength="64" />
+    <Property Name="TEN_KHOA_TU" Type="nvarchar" MaxLength="128" />
+    <Property Name="NGAY_BAT_DAU" Type="date" />
+    <Property Name="NGAY_KET_THUC" Type="date" />
+    <Property Name="MIEU_TA" Type="nvarchar" MaxLength="50" />
+    <Property Name="TRANG_THAI" Type="bit" />
+  </EntityType>
+  <EntityType Name="PHONG_NGU">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MA_PHONG" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="TEN_PHONG" Type="nvarchar" MaxLength="128" />
+    <Property Name="LOAI_PHONG" Type="bit" />
+    <Property Name="KICH_THUOC" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="TAI_KHOAN">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="USERNAME" Type="varchar" MaxLength="64" />
+    <Property Name="PASSWORD" Type="varchar" MaxLength="64" />
+    <Property Name="IS_ADMIN" Type="bit" />
+  </EntityType>
+  <EntityType Name="TU_SINH">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SO_THE" Type="varchar" MaxLength="50" />
+    <Property Name="HO_TEN" Type="nvarchar" MaxLength="50" />
+    <Property Name="NAM_SINH" Type="int" />
+    <Property Name="GIOI_TINH" Type="bit" />
+    <Property Name="TEN_PHU_HUYNH" Type="nvarchar" MaxLength="50" />
+    <Property Name="SDT" Type="varchar" MaxLength="50" />
+    <Property Name="QUE_QUAN" Type="nvarchar" MaxLength="50" />
+    <Property Name="ID_PHONG" Type="int" />
+    <Property Name="ID_KHOA_TU" Type="int" />
+  </EntityType>
+  <Association Name="FK_TU_SINH_KHOA_TU">
+    <End Role="KHOA_TU" Type="Self.KHOA_TU" Multiplicity="0..1" />
+    <End Role="TU_SINH" Type="Self.TU_SINH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="KHOA_TU">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TU_SINH">
+        <PropertyRef Name="ID_KHOA_TU" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TU_SINH_PHONG_NGU">
+    <End Role="PHONG_NGU" Type="Self.PHONG_NGU" Multiplicity="0..1" />
+    <End Role="TU_SINH" Type="Self.TU_SINH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PHONG_NGU">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TU_SINH">
+        <PropertyRef Name="ID_PHONG" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="QLTuSinhModelStoreContainer">
+    <EntitySet Name="KHOA_TU" EntityType="Self.KHOA_TU" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PHONG_NGU" EntityType="Self.PHONG_NGU" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TAI_KHOAN" EntityType="Self.TAI_KHOAN" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TU_SINH" EntityType="Self.TU_SINH" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_TU_SINH_KHOA_TU" Association="Self.FK_TU_SINH_KHOA_TU">
+      <End Role="KHOA_TU" EntitySet="KHOA_TU" />
+      <End Role="TU_SINH" EntitySet="TU_SINH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TU_SINH_PHONG_NGU" Association="Self.FK_TU_SINH_PHONG_NGU">
+      <End Role="PHONG_NGU" EntitySet="PHONG_NGU" />
+      <End Role="TU_SINH" EntitySet="TU_SINH" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
