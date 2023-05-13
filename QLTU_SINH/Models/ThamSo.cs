@@ -13,6 +13,12 @@ namespace QLTU_SINH.Models
 
         public string maphong { get; set; }
         public string makhoatu { get; set; }
+        public string sothe { get; set; }
+        public string hoten { get; set; }
+
+        public bool gioitinh { get; set; }
+        public string tukhoa { get; set; }
+        public string id { get; set; }
 
     }
 }

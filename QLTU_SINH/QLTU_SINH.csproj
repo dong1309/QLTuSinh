@@ -136,6 +136,7 @@
     <Compile Include="API\KhoaTuController.cs" />
     <Compile Include="API\LoginController.cs" />
     <Compile Include="API\PhongNguController.cs" />
+    <Compile Include="API\TuSinhController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -171,40 +172,53 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KhoaTuController.cs" />
     <Compile Include="Controllers\PhongNguController.cs" />
+    <Compile Include="Controllers\TuSinhController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Get_DSKhoaTu_Result.cs">
+      <DependentUpon>QLTuSinh.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Get_DSPhongNgu_Result.cs">
+      <DependentUpon>QLTuSinh.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\KHOA_TU.cs">
-      <DependentUpon>QLTuSInh.tt</DependentUpon>
+      <DependentUpon>QLTuSinh.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PHONG_NGU.cs">
-      <DependentUpon>QLTuSInh.tt</DependentUpon>
+      <DependentUpon>QLTuSinh.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\QLTuSInh.Context.cs">
+    <Compile Include="Models\QLTuSinh.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>QLTuSInh.Context.tt</DependentUpon>
+      <DependentUpon>QLTuSinh.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\QLTuSInh.cs">
+    <Compile Include="Models\QLTuSinh.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>QLTuSInh.tt</DependentUpon>
+      <DependentUpon>QLTuSinh.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\QLTuSInh.Designer.cs">
+    <Compile Include="Models\QLTuSinh.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>QLTuSInh.edmx</DependentUpon>
+      <DependentUpon>QLTuSinh.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>QLTuSinh.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>QLTuSinh.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>QLTuSInh.tt</DependentUpon>
+      <DependentUpon>QLTuSinh.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TAI_KHOAN.cs">
-      <DependentUpon>QLTuSInh.tt</DependentUpon>
+      <DependentUpon>QLTuSinh.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ThamSo.cs" />
     <Compile Include="Models\TU_SINH.cs">
-      <DependentUpon>QLTuSInh.tt</DependentUpon>
+      <DependentUpon>QLTuSinh.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -217,18 +231,19 @@
     <Content Include="Content\JS\HomeCtrl.js" />
     <Content Include="Content\JS\KhoaTu.js" />
     <Content Include="Content\JS\PhongNguCtrl.js" />
+    <Content Include="Content\JS\TuSinhCtrl.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Models\QLTuSInh.Context.tt">
+    <Content Include="Models\QLTuSinh.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>QLTuSInh.Context.cs</LastGenOutput>
-      <DependentUpon>QLTuSInh.edmx</DependentUpon>
+      <DependentUpon>QLTuSinh.edmx</DependentUpon>
+      <LastGenOutput>QLTuSinh.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\QLTuSInh.tt">
+    <Content Include="Models\QLTuSinh.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>QLTuSInh.edmx</DependentUpon>
-      <LastGenOutput>QLTuSInh.cs</LastGenOutput>
+      <DependentUpon>QLTuSinh.edmx</DependentUpon>
+      <LastGenOutput>QLTuSinh.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -251,12 +266,12 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-    <EntityDeploy Include="Models\QLTuSInh.edmx">
+    <EntityDeploy Include="Models\QLTuSinh.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>QLTuSInh.Designer.cs</LastGenOutput>
+      <LastGenOutput>QLTuSinh.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\QLTuSInh.edmx.diagram">
-      <DependentUpon>QLTuSInh.edmx</DependentUpon>
+    <Content Include="Models\QLTuSinh.edmx.diagram">
+      <DependentUpon>QLTuSinh.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -281,6 +296,7 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\PhongNgu\DanhSachPhongNgu.cshtml" />
     <Content Include="Views\KhoaTu\DanhSachKhoaTu.cshtml" />
+    <Content Include="Views\TuSinh\DanhSachTuSinh.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

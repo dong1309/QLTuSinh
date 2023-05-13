@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\dell\source\repos\QLTU_SINH\QLTU_SINH\Models\QLTuSInh.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\nguye\Documents\GitHub\QLTuSinh\QLTU_SINH\Models\QLTuSinh.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

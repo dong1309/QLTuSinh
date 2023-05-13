@@ -1,20 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="QLTuSinhModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-  <EntityContainer Name="QLTuSinhEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="KHOA_TU" EntityType="QLTuSinhModel.KHOA_TU" />
-    <EntitySet Name="PHONG_NGU" EntityType="QLTuSinhModel.PHONG_NGU" />
-    <EntitySet Name="sysdiagrams" EntityType="QLTuSinhModel.sysdiagram" />
-    <EntitySet Name="TAI_KHOAN" EntityType="QLTuSinhModel.TAI_KHOAN" />
-    <EntitySet Name="TU_SINH" EntityType="QLTuSinhModel.TU_SINH" />
-    <AssociationSet Name="FK_TU_SINH_KHOA_TU" Association="QLTuSinhModel.FK_TU_SINH_KHOA_TU">
-      <End Role="KHOA_TU" EntitySet="KHOA_TU" />
-      <End Role="TU_SINH" EntitySet="TU_SINH" />
-    </AssociationSet>
-    <AssociationSet Name="FK_TU_SINH_PHONG_NGU" Association="QLTuSinhModel.FK_TU_SINH_PHONG_NGU">
-      <End Role="PHONG_NGU" EntitySet="PHONG_NGU" />
-      <End Role="TU_SINH" EntitySet="TU_SINH" />
-    </AssociationSet>
-  </EntityContainer>
   <EntityType Name="KHOA_TU">
     <Key>
       <PropertyRef Name="ID" />
@@ -26,24 +11,24 @@
     <Property Name="NGAY_KET_THUC" Type="DateTime" Precision="0" />
     <Property Name="MIEU_TA" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="TRANG_THAI" Type="Boolean" />
-    <NavigationProperty Name="TU_SINH" Relationship="QLTuSinhModel.FK_TU_SINH_KHOA_TU" FromRole="KHOA_TU" ToRole="TU_SINH" />
+    <NavigationProperty Name="TU_SINH" Relationship="Self.FK_TU_SINH_KHOA_TU" FromRole="KHOA_TU" ToRole="TU_SINH" />
   </EntityType>
   <EntityType Name="PHONG_NGU">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="MA_PHONG" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="MA_PHONG" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="TEN_PHONG" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="LOAI_PHONG" Type="Boolean" />
     <Property Name="KICH_THUOC" Type="Int32" />
-    <NavigationProperty Name="TU_SINH" Relationship="QLTuSinhModel.FK_TU_SINH_PHONG_NGU" FromRole="PHONG_NGU" ToRole="TU_SINH" />
+    <NavigationProperty Name="TU_SINH" Relationship="Self.FK_TU_SINH_PHONG_NGU" FromRole="PHONG_NGU" ToRole="TU_SINH" />
   </EntityType>
   <EntityType Name="sysdiagram">
     <Key>
       <PropertyRef Name="diagram_id" />
     </Key>
-    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="principal_id" Type="Int32" Nullable="false" />
     <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="version" Type="Int32" />
@@ -72,12 +57,12 @@
     <Property Name="QUE_QUAN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ID_PHONG" Type="Int32" />
     <Property Name="ID_KHOA_TU" Type="Int32" />
-    <NavigationProperty Name="KHOA_TU" Relationship="QLTuSinhModel.FK_TU_SINH_KHOA_TU" FromRole="TU_SINH" ToRole="KHOA_TU" />
-    <NavigationProperty Name="PHONG_NGU" Relationship="QLTuSinhModel.FK_TU_SINH_PHONG_NGU" FromRole="TU_SINH" ToRole="PHONG_NGU" />
+    <NavigationProperty Name="KHOA_TU" Relationship="Self.FK_TU_SINH_KHOA_TU" FromRole="TU_SINH" ToRole="KHOA_TU" />
+    <NavigationProperty Name="PHONG_NGU" Relationship="Self.FK_TU_SINH_PHONG_NGU" FromRole="TU_SINH" ToRole="PHONG_NGU" />
   </EntityType>
   <Association Name="FK_TU_SINH_KHOA_TU">
-    <End Type="QLTuSinhModel.KHOA_TU" Role="KHOA_TU" Multiplicity="0..1" />
-    <End Type="QLTuSinhModel.TU_SINH" Role="TU_SINH" Multiplicity="*" />
+    <End Role="KHOA_TU" Type="Self.KHOA_TU" Multiplicity="0..1" />
+    <End Role="TU_SINH" Type="Self.TU_SINH" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="KHOA_TU">
         <PropertyRef Name="ID" />
@@ -88,8 +73,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_TU_SINH_PHONG_NGU">
-    <End Type="QLTuSinhModel.PHONG_NGU" Role="PHONG_NGU" Multiplicity="0..1" />
-    <End Type="QLTuSinhModel.TU_SINH" Role="TU_SINH" Multiplicity="*" />
+    <End Role="PHONG_NGU" Type="Self.PHONG_NGU" Multiplicity="0..1" />
+    <End Role="TU_SINH" Type="Self.TU_SINH" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="PHONG_NGU">
         <PropertyRef Name="ID" />
@@ -99,4 +84,82 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityContainer Name="QLTuSinhEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="KHOA_TU" EntityType="Self.KHOA_TU" />
+    <EntitySet Name="PHONG_NGU" EntityType="Self.PHONG_NGU" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="TAI_KHOAN" EntityType="Self.TAI_KHOAN" />
+    <EntitySet Name="TU_SINH" EntityType="Self.TU_SINH" />
+    <AssociationSet Name="FK_TU_SINH_KHOA_TU" Association="Self.FK_TU_SINH_KHOA_TU">
+      <End Role="KHOA_TU" EntitySet="KHOA_TU" />
+      <End Role="TU_SINH" EntitySet="TU_SINH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TU_SINH_PHONG_NGU" Association="Self.FK_TU_SINH_PHONG_NGU">
+      <End Role="PHONG_NGU" EntitySet="PHONG_NGU" />
+      <End Role="TU_SINH" EntitySet="TU_SINH" />
+    </AssociationSet>
+    <FunctionImport Name="Get_DSKhoaTu" ReturnType="Collection(QLTuSinhModel.Get_DSKhoaTu_Result)">
+      <Parameter Name="makhoatu" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="Get_DSPhongNgu" ReturnType="Collection(QLTuSinhModel.Get_DSPhongNgu_Result)">
+      <Parameter Name="maphong" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(QLTuSinhModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(QLTuSinhModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+  </EntityContainer>
+  <ComplexType Name="Get_DSKhoaTu_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="MA_KHOA_TU" Nullable="true" MaxLength="64" />
+    <Property Type="String" Name="TEN_KHOA_TU" Nullable="true" MaxLength="128" />
+    <Property Type="DateTime" Name="NGAY_BAT_DAU" Nullable="true" />
+    <Property Type="DateTime" Name="NGAY_KET_THUC" Nullable="true" />
+    <Property Type="String" Name="MIEU_TA" Nullable="true" MaxLength="50" />
+    <Property Type="Boolean" Name="TRANG_THAI" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="Get_DSPhongNgu_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="MA_PHONG" Nullable="false" MaxLength="64" />
+    <Property Type="String" Name="TEN_PHONG" Nullable="true" MaxLength="128" />
+    <Property Type="Boolean" Name="LOAI_PHONG" Nullable="true" />
+    <Property Type="Int32" Name="KICH_THUOC" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
 </Schema>

@@ -9,25 +9,40 @@ using System.Data;
 using Dapper;
 using System.Text;
 
+
 namespace QLTU_SINH.API
 {
     public class PhongNguController : ApiController
     {
         private QLTuSinhEntities db = new QLTuSinhEntities();
         [HttpPost]
-        [Route("api/Api_PhongNgu/DanhSachPhongNgu")] 
+        [Route("api/Api_PhongNgu/DanhSachPhongNguTheoGioiTinh")] 
+        public dynamic DanhSachPhongNguTheoGioiTinh(ThamSo thamso)
+        {
+            dynamic returnedData = null;
+            returnedData = db.Database.Connection.Query<dynamic>("Get_DSPhongNguTheoGT", new
+            {
+              gioitinh = thamso.gioitinh,
+              tukhoa = thamso.tukhoa
+            }
+            , commandType: CommandType.StoredProcedure).ToList();
+            return returnedData;
+        }
+
+        [HttpPost]
+        [Route("api/Api_PhongNgu/DanhSachPhongNgu")]
         public dynamic DanhSachPhongNgu(ThamSo thamso)
         {
             dynamic returnedData = null;
             returnedData = db.Database.Connection.Query<dynamic>("Get_DSPhongNgu", new
             {
-              maphong = thamso.maphong
+                maphong = thamso.maphong
             }
             , commandType: CommandType.StoredProcedure).ToList();
             return returnedData;
         }
-        
-       
+
+
         [HttpPost]
         [Route("api/Api_PhongNgu/ThemPhongNgu")]
         public dynamic ThemPhongNgu(PHONG_NGU phongngu)
@@ -50,7 +65,7 @@ namespace QLTU_SINH.API
                     db.PHONG_NGU.Add(phongngu);
                     db.SaveChanges();
                     message.StatusCode = HttpStatusCode.OK;
-                    message.Content = new StringContent($"Thêm thành công người dùng {phongngu.MA_PHONG}!", Encoding.UTF8, "text/plain");
+                    message.Content = new StringContent($"Thêm thành công phòng ngủ{phongngu.MA_PHONG}!", Encoding.UTF8, "text/plain");
                 }
                 catch (Exception ex)
                 {
@@ -61,7 +76,7 @@ namespace QLTU_SINH.API
             else
             {
                 message.StatusCode = HttpStatusCode.InternalServerError;
-                message.Content = new StringContent($"Ma Kho {phongngu.MA_PHONG} đã tồn tại!", Encoding.UTF8, "text/plain");
+                message.Content = new StringContent($"Phòng Ngủ {phongngu.MA_PHONG} đã tồn tại!", Encoding.UTF8, "text/plain");
             }
             return message;
         }
@@ -70,40 +85,52 @@ namespace QLTU_SINH.API
         [Route("api/Api_PhongNgu/SuaPhongNgu")]
         public dynamic SuaPhongNgu(PHONG_NGU phongngu)
         {
-            HttpResponseMessage message = new HttpResponseMessage();
+            try
+            { 
             var query = db.PHONG_NGU.Where(x => x.MA_PHONG == phongngu.MA_PHONG).FirstOrDefault();
 
             if (query != null)
             {
-                try
-                {
-                    //Thông tin cá nhân
-                    query.MA_PHONG = phongngu.MA_PHONG;
-                    query.TEN_PHONG = phongngu.TEN_PHONG;
-                    query.LOAI_PHONG = phongngu.LOAI_PHONG;
-                    query.KICH_THUOC = phongngu.KICH_THUOC;
-                   
 
-                    db.SaveChanges();
 
-                    message.StatusCode = HttpStatusCode.OK;
-                    message.Content = new StringContent($"Update thành công nhân viên {query.MA_PHONG} !", Encoding.UTF8, "text/plain");
-                }
-                catch (Exception ex)
+                query.MA_PHONG = phongngu.MA_PHONG;
+                query.TEN_PHONG = phongngu.TEN_PHONG;
+                query.LOAI_PHONG = phongngu.LOAI_PHONG;
+                query.KICH_THUOC = phongngu.KICH_THUOC;
+
+
+                db.SaveChanges();
+
+                return query;
+
+            }
+                else
                 {
-                    message.StatusCode = HttpStatusCode.InternalServerError;
-                    message.Content = new StringContent(ex.Message, Encoding.UTF8, "text/plain");
+                    return Ok("Cập nhật NCC thất bại !");
                 }
             }
-            else
-            {
-                message.StatusCode = HttpStatusCode.InternalServerError;
-                message.Content = new StringContent("Danh mục kho không tồn tại!", Encoding.UTF8, "text/plain");
-            }
-            return message;
-
+            catch (Exception ex)
+                {
+                return BadRequest("Đã xảy ra lỗi ! " + ex);
+                }
+       
         }
+        //
+        //[HttpPost]
+        //[Route("api/Api_PhongNgu/TimKiemPhongNgu")]
+        //public dynamic TimKiemPhongNgu(ThamSo thamso)
+        //{
+        //    var timkiem = db.PHONG_NGU.Where(x => x.MA_PHONG.Contains(thamso.maphong) || x.TEN_PHONG.Contains(thamso.maphong)).ToList();
 
+        //    return timkiem;
+        //    //
+        //}
+        //[HttpPost]
+        //[Route("api/Api_PhongNgu/SearchPhongNgu")]
+        //public dynamic SearchPhongNgu(ThamSo thamSo)
+        //{
+        //    var returnData = db.PHONG_NGU.Where ( x => x.MA_PHONG == )
+        //}
         ////
         [HttpPost]
         [Route("api/Api_PhongNgu/XoaPhongNgu")]
@@ -118,5 +145,21 @@ namespace QLTU_SINH.API
             return Ok("Thành công!");
             //
         }
+
+        [HttpPost]
+        [Route("api/Api_PhongNgu/GetDSTuSinhPhongNgu")]
+        public dynamic GetDSTuSinhPhongNgu(ThamSo thamso)
+        {
+            dynamic returnedData = null;
+            returnedData = db.Database.Connection.Query<dynamic>("Proc_GetDSTuSinhTrongPhongNgu", new
+            {
+                maphong = thamso.maphong
+            }
+            , commandType: CommandType.StoredProcedure).ToList();
+            return returnedData;
+        }
+
     }
+
+
 }

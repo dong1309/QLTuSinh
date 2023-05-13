@@ -1,0 +1,302 @@
+﻿
+@{
+    ViewBag.Title = "DanhSachTuSinh";
+}
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+<script src="~/Content/JS/TuSinhCtrl.js"></script>
+<div ng-app="myApp" ng-controller="TuSinhCtrl">
+
+    <div class="col-md-12" style="margin:10px 0">
+        <div class="list-content">
+            <div class="col-md-9" style="color: red; font-size:14px;">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h2 style="color:blue;">Danh Sách Tu Sinh</h2>
+                    </div>
+                    <div>
+                        <select ng-model="ID_KHOA_TU_SELLECTED" class="form-control">
+                            <option ng-repeat="item in ListKhoaTu" ng-value="item.ID">
+                               {{item.MA_KHOA_TU}}
+                            </option>
+                            
+                        </select>
+                    </div>
+                           
+                       
+
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <button style="float:left" type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddTuSinh">Thêm mới</button>
+                <div class="table table-responsive">
+                    <table class="table w-100" style="background-color:transparent">
+                        <thead>
+                            <tr>
+                                <th class="text-center"width="2%">STT</th>
+                                <th class="text-center" width="5%">Số thẻ</th>
+                                <th class="text-center" width="15%">Họ và tên</th>
+                                <th class="text-center" width="5%">Năm sinh</th>
+                                <th class="text-center" width="5%">Giới tính</th>
+                                <th class="text-center" width="15%">Tên Phụ Huynh</th>
+                                <th class="text-center" width="10%">Số điện thoại</th>
+                                <th class="text-center" width="20%">Quê Quán</th>
+                                <th class="text-center" width="10%">Phòng ở</th>
+                             
+                                <th class="text-center" width="20%">Tùy chỉnh</th>
+
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th><input type="text" class="input-form form-control" ng-model="sothets" placeholder="Tìm kiếm số thẻ" ng-model-options="{debounce:500}" /></th>
+                                <th><input type="text" class="input-form form-control" ng-model="hotents" placeholder="Tìm kiếm họ và tên" ng-model-options="{debounce:500}" /></th>
+                                <th></th>
+                                <th></th>
+                                <th><input type="text" class="input-form form-control" ng-model="tenphuhuynhts" placeholder="Tìm kiếm tên phụ huynh" ng-model-options="{debounce:500}" /></th>
+                                <th></th>
+                                <th><input type="text" class="input-form form-control" ng-model="quequants" placeholder="Tìm kiếm quê quán" ng-model-options="{debounce:500}" /></th>
+                                <th><input type="text" class="input-form form-control" ng-model="phongots" placeholder="Tìm kiếm phòng ở" ng-model-options="{debounce:500}" /></th>
+                               
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in ListTuSinh  | filter:{SO_THE:sothets} | filter:{HO_TEN:hotents} | filter:{TEN_PHU_HUYNH:tenphuhuynhts} | filter:{QUE_QUAN:quequants} | filter:{TEN_PHONG:phongots}">
+                                <td>{{$index+1}}</td>
+                                <td class="text-left">{{item.SO_THE}}</td>
+                                <td class="text-left">{{item.HO_TEN}}</td>
+                                <td class="text-left">{{item.NAM_SINH}}</td>
+                                <td class="text-left">{{item.GIOI_TINH == 1? 'Nam':'Nữ'}}</td>
+                                <td class="text-left">{{item.TEN_PHU_HUYNH}}</td>
+                                <td class="text-left">{{item.SDT}}</td>
+                                <td class="text-left">{{item.QUE_QUAN}}</td>
+                                <td class="text-left">{{item.TEN_PHONG}}</td>
+                               
+                                
+
+                                <td style="display:flex">
+                                    <button class="btn btn-primary" ng-click="GetTS(item)" data-toggle="modal" data-target="#SuaTuSinh">Sửa</button>
+                                    <button class="btn btn-danger" ng-click="XoaTuSinh(item.SO_THE)">Xoá</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn btn-primary" ng-click="XuatExcel()">Xuất excel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="AddTuSinh" role="dialog" tabindex="-1" style="overflow-x: auto; overflow-y: auto; ">
+        <div class="modal-dialog modal-lg" style="max-width:99%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm mới tu sinh</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table style="width: 100%; text-align: left">
+
+                        <tr>
+                            <td>Số thẻ :</td>
+                            <td><input type="text" class="form-control" ng-model="sothe" /></td>
+                        </tr>
+                        <tr>
+                            <td>Họ và tên</td>
+                            <td><input type="text" class="form-control" ng-model="hovaten" /></td>
+                        </tr>
+                        <tr>
+                            <td>Năm sinh</td>
+                            <td><input type="text" class="form-control" ng-model="namsinh" /></td>
+                        </tr>
+                        <tr>
+                            <td>Giới tính:</td>
+                            <td>
+                                <select ng-model="gioitinh" class="form-control" ng-change="GetPhongNguByGT()">
+                                    <option ng-value="1">
+                                        Nam
+                                    </option>
+                                    <option ng-value="0">
+                                        Nữ
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tên phụ huynh</td>
+                            <td><input type="text" class="form-control" ng-model="tenphuhuynh" /></td>
+                        </tr>
+                        <tr>
+                            <td>Số điện thoại</td>
+                            <td><input type="text" class="form-control" ng-model="sdt" /></td>
+                        </tr>
+                        <tr>
+                            <td>Quê quán</td>
+                            <td><input type="text" class="form-control" ng-model="quequan" /></td>
+                        </tr>
+                        <tr>
+                            <td>Tên phòng ngủ:</td>
+                            <td>
+                                <input type="text" class="form-control" autocomplete="off" ng-model="tenphong" ng-change="GetPhongNguByGT()" ng-focus="showTable = true" ng-blur="showTable = false" required>
+                                <div class="input-group-btn" style="position:relative;width:100%;display:block">
+                                    <div class="dropdown-menu dropdown-menu-center borderRadius0 padding0" style="display: block;max-height: 200px;overflow:auto;position:absolute;width:100%" ng-show="showTable">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead class="bg-blue text-white">
+                                                    <tr>
+                                                        <th>STT</th>
+                                                        <th>Tên phòng ngủ</th>
+                                                        <th>Loại phòng</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style="cursor:pointer" ng-mousedown="SelectPhongNgu(item);" ng-repeat="item in PhongNgusTheoGioiTinh">
+                                                        <td>{{$index+1}}</td>
+                                                        <td>{{item.TEN_PHONG}}</td>
+                                                        <th>{{item.LOAI_PHONG == 1? 'Nam':'Nữ'}}</th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+
+
+
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+                    <button type="button" class="btn btn-primary" ng-click="AddTuSinhMoi()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="SuaTuSinh" role="dialog">
+        <div class="modal-dialog modal-lg " style="width:85%">
+            <div class="modal-content ">
+                <div class="modal-header ">
+                    <h4 class="modal-title text-bold" id="myModalLabel" style="background-color:#0b4645db;">THÔNG TIN TU SINH</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover ">
+                        <tr>
+                            <td>Số thẻ </td>
+                            <td>
+                                <input type="text" class="form-control input-form  ng-pristine ng-untouched ng-valid ng-empty" ng-model="ts.SO_THE">
+                            </td>
+
+                            @*ng-disabled="true"*@
+                        </tr>
+
+                        <tr>
+                            <td>Tên Phòng Ngủ</td>
+                            <td>
+                                <input type="text" class="form-control input-form ng-pristine ng-untouched ng-valid ng-empty" ng-model="ts.HO_TEN">
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>Năm Sinh</td>
+                            <td>
+                                <input type="text" class="form-control input-form ng-pristine ng-untouched ng-valid ng-empty" ng-model="ts.NAM_SINH">
+                            </td>
+
+                        </tr>
+                      
+                        <tr>
+                            <td>Giới tính:</td>
+                            <td>
+                                <select ng-model="ts.GIOI_TINH" class="form-control" ng-change="GetPhongNguByGT1()">
+                                    <option ng-value="1" ng-selected="ts.GIOI_TINH" >
+                                        Nam
+                                    </option>
+                                    <option ng-value="0" ng-selected="!ts.GIOI_TINH">
+                                        Nữ
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tên phụ huynh</td>
+                            <td>
+                                <input type="text" class="form-control input-form ng-pristine ng-untouched ng-valid ng-empty" ng-model="ts.TEN_PHU_HUYNH">
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>Tên phòng ngủ:</td>
+                            <td>
+                                <input type="text" class="form-control" autocomplete="off" ng-model="ts.TEN_PHONG" ng-change="GetPhongNguByGT1()" ng-focus="showTable = true" ng-blur="showTable = false" required>
+                                <div class="input-group-btn" style="position:relative;width:100%;display:block">
+                                    <div class="dropdown-menu dropdown-menu-center borderRadius0 padding0" style="display: block;max-height: 200px;overflow:auto;position:absolute;width:100%" ng-show="showTable">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead class="bg-blue text-white">
+                                                    <tr>
+                                                        <th>STT</th>
+                                                        <th>Tên phòng ngủ</th>
+                                                        <th>Loại phòng</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style="cursor:pointer" ng-mousedown="SelectPhongNgu1(item);" ng-repeat="item in PhongNgusTheoGioiTinh">
+                                                        <td>{{$index+1}}</td>
+                                                        <td>{{item.TEN_PHONG}}</td>
+                                                        <th>{{item.LOAI_PHONG == 1? 'Nam':'Nữ'}}</th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Khoá tu</td>
+                            <td>
+                                <input type="text" class="form-control input-form ng-pristine ng-untouched ng-valid ng-empty" ng-model="ts.TEN_KHOA_TU">
+                            </td>
+
+                        </tr>
+
+
+                    </table>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-success" ng-click="SaveTS(ts)">Cập nhật</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-danger">Exit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .col-md-2 {
+        width: 99.666667%;
+    }
+    .table {
+        width: 100%;
+        max-width: 150%;
+        margin-bottom: 20px;
+    }
+    
+.container {
+    width: 1500px;
+}
+</style>

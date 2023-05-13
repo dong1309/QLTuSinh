@@ -1,6 +1,6 @@
 ﻿var app = angular.module("myApp", []);
 app.controller('PhongNguCtrl', function ($scope, $http) {
-
+    $scope.maphong = '';
     $scope.LoadDanhSachDanhMucKho = function () {
         var data = {
             maphong: $scope.maphong
@@ -12,13 +12,13 @@ app.controller('PhongNguCtrl', function ($scope, $http) {
     }
     $scope.LoadDanhSachDanhMucKho();
 
-    $scope.maphong = '';
+    
     $scope.tenphong = '';
     $scope.kichthuoc = '';
     $scope.loaiphong = '';
 
 
-    $scope.AddDanhMucKho = () => {
+    $scope.AddPhongNgu = () => {
 
 
         var data = {
@@ -48,7 +48,7 @@ app.controller('PhongNguCtrl', function ($scope, $http) {
         $scope.dm = item;
     };
     //
-    $scope.SaveDanhMuc = function (dm) {
+    $scope.SavePhongNgu = function (dm) {
         console.log(dm);
         var data_edit = {
             MA_PHONG: dm.MA_PHONG,
@@ -63,12 +63,12 @@ app.controller('PhongNguCtrl', function ($scope, $http) {
             console.log(response)
             if (response.status == 200) {
                 SuccessSystem('Cập nhật nhân viên thành công!')
-                $scope.LoadDanhSachDanhMucKho();
+            
                 dm.MA_PHONG = '';
                 dm.TEN_PHONG = '';
                 dm.LOAI_PHONG = '';
                 dm.KICH_THUOC = '';
-                
+                $scope.LoadDanhSachDanhMucKho();
             }
             else {
                 ErrorSystem(response.data);
@@ -80,6 +80,10 @@ app.controller('PhongNguCtrl', function ($scope, $http) {
     };
     //
     $scope.XoaPhong = function (maphong) {
+        var x = confirm("Bạn có chắc muốn xóa mã hàng này không?")
+        if (x) {
+
+       
         var data = {
             maphong: maphong
         }
@@ -88,6 +92,23 @@ app.controller('PhongNguCtrl', function ($scope, $http) {
             console.log('Thành công')
 
         })
+        }
 
     }
+    
+    $scope.GetDSTuSinh = function (maphong) {
+      
+        $('#CTTuSinh').modal('show')
+        var data = {
+            maphong: maphong
+        }
+        $http.post(origin + '/api/Api_PhongNgu/GetDSTuSinhPhongNgu', data).then(function (response) {
+            $scope.ListTuSinhPhongNgu = response.data;
+            console.log('Thành công')
+
+        })
+
+    }
+
+
 });

@@ -3,7 +3,6 @@
     ViewBag.Title = "DanhSachPhongNgu";
 }
 
-<h2>DanhSachPhongNgu</h2>
 
 @{
     Layout = "../Shared/_Layout.cshtml";
@@ -14,7 +13,7 @@
 <script src="~/Content/JS/PhongNguCtrl.js"></script>
 
 <div ng-app="myApp" ng-controller="PhongNguCtrl">
-   
+
     <div class="col-md-12" style="margin:10px 0">
         <div class="list-content">
             <div class="col-md-9" style="color: red; font-size:14px;">
@@ -23,32 +22,37 @@
                         <h2 style="color:blue;">Danh Sách Phòng Ngủ</h2>
                     </div>
 
-               
+
                 </div>
             </div>
 
             <div class="col-md-9">
-                <button style="float:left" type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddDanhMuc">Thêm mới</button>
+                <button style="float:left" type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddPhongNgu">Thêm mới</button>
                 <div class="table table-responsive">
                     <table class="table w-100" style="background-color:transparent">
                         <thead>
                             <tr>
-                                <th class="text-center" width="10%">STT</thwidth="10%">
+                                <th class="text-center" width="10%">STT</th>
                                 <th class="text-center" width="15%">Mã Phòng Ngủ</th>
                                 <th class="text-center" width="15%">Tên phòng ngủ</th>
                                 <th class="text-center" width="15%">Loại phòng</th>
                                 <th class="text-center" width="15%">Kích Thước</th>
-                              
                             </tr>
-
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th><input type="text" class="input-form form-control" ng-model="tenphongngu" placeholder="Tìm kiếm tên phòng" ng-model-options="{debounce:500}" /></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in ListPhongNgu ">
+                            <tr ng-repeat="item in ListPhongNgu  | filter:{TEN_PHONG:tenphongngu} " ng-click="GetDSTuSinh(item.MA_PHONG)">
                                 <td>{{$index+1}}</td>
-                                <td class="text-left">{{item.MA_PHONG}}</td>
-                                <td class="text-left">{{item.TEN_PHONG}}</td>
-                                <td class="text-left">{{item.LOAI_PHONG == 1? 'Nam':'Nữ'}}</td>
-                                <td class="text-left">{{item.KICH_THUOC}}</td>
+                                <td class="text-left" ng-click="GetDSTuSinh(item.MA_PHONG)">{{item.MA_PHONG}}</td>
+                                <td class="text-left" ng-click="GetDSTuSinh(item.MA_PHONG)">{{item.TEN_PHONG}}</td>
+                                <td class="text-left" ng-click="GetDSTuSinh(item.MA_PHONG)">{{item.LOAI_PHONG == 1? 'Nam':'Nữ'}}</td>
+                                <td class="text-left" ng-click="GetDSTuSinh(item.MA_PHONG)">{{item.KICH_THUOC}}</td>
 
                                 <td>
                                     <button class="btn btn-primary" ng-click="GetDM(item)" data-toggle="modal" data-target="#SuaDanhMuc">Sửa</button>
@@ -62,8 +66,76 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="CTTuSinh" role="dialog" tabindex="-1" style="overflow-x: auto; overflow-y: auto; ">
+        <div class="modal-dialog modal-lg" style="max-width:99%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table w-100" style="background-color:transparent">
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="2%">STT</th>
+                                <th class="text-center" width="5%">Số thẻ</th>
+                                <th class="text-center" width="15%">Họ và tên</th>
+                                <th class="text-center" width="5%">Năm sinh</th>
+                                <th class="text-center" width="5%">Giới tính</th>
+                                <th class="text-center" width="15%">Tên Phụ Huynh</th>
+                                <th class="text-center" width="10%">Số điện thoại</th>
+                                <th class="text-center" width="20%">Quê Quán</th>
+                                <th class="text-center" width="10%">Phòng ở</th>
+                                <th class="text-center" width="5%">Khóa tu năm</th>
+                                <th class="text-center" width="20%">Tùy chỉnh</th>
 
-    <div class="modal fade" id="AddDanhMuc" role="dialog" tabindex="-1" style="overflow-x: auto; overflow-y: auto; ">
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th><input type="text" class="input-form form-control" ng-model="sothets" placeholder="Tìm kiếm số thẻ" ng-model-options="{debounce:500}" /></th>
+                                <th><input type="text" class="input-form form-control" ng-model="hotents" placeholder="Tìm kiếm họ và tên" ng-model-options="{debounce:500}" /></th>
+                                <th></th>
+                                <th></th>
+                                <th><input type="text" class="input-form form-control" ng-model="tenphuhuynhts" placeholder="Tìm kiếm tên phụ huynh" ng-model-options="{debounce:500}" /></th>
+                                <th></th>
+                                <th><input type="text" class="input-form form-control" ng-model="quequants" placeholder="Tìm kiếm quê quán" ng-model-options="{debounce:500}" /></th>
+                                <th><input type="text" class="input-form form-control" ng-model="phongots" placeholder="Tìm kiếm phòng ở" ng-model-options="{debounce:500}" /></th>
+                                <th></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in ListTuSinhPhongNgu  | filter:{SO_THE:sothets} | filter:{HO_TEN:hotents} | filter:{TEN_PHU_HUYNH:tenphuhuynhts} | filter:{QUE_QUAN:quequants} | filter:{TEN_PHONG:phongots}">
+                                <td>{{$index+1}}</td>
+                                <td class="text-left">{{item.SO_THE}}</td>
+                                <td class="text-left">{{item.HO_TEN}}</td>
+                                <td class="text-left">{{item.NAM_SINH}}</td>
+                                <td class="text-left">{{item.GIOI_TINH == 1? 'Nam':'Nữ'}}</td>
+                                <td class="text-left">{{item.TEN_PHU_HUYNH}}</td>
+                                <td class="text-left">{{item.SDT}}</td>
+                                <td class="text-left">{{item.QUE_QUAN}}</td>
+                                <td class="text-left">{{item.TEN_PHONG}}</td>
+                                <td class="text-left">{{item.TEN_KHOA_TU}}</td>
+
+
+                                <td style="display:flex">
+                                    <button class="btn btn-primary" ng-click="GetTS(item)" data-toggle="modal" data-target="#SuaDanhMuc">Sửa</button>
+                                    <button class="btn btn-danger" ng-click="XoaTuSinh(item.SO_THE)">Xoá</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+                    <button type="button" class="btn btn-primary" ng-click="AddPhongNgu()">Xuất Excel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="AddPhongNgu" role="dialog" tabindex="-1" style="overflow-x: auto; overflow-y: auto; ">
         <div class="modal-dialog modal-lg" style="max-width:99%;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -84,21 +156,23 @@
                         </tr>
 
                         <tr>
-                            <td  >Loại Phòng:</td>
-                            <td><select ng-model="loaiphong"  class="form-control">
-                                <option ng-value="1">
-                                    Nam
-                                </option>
-                                <option ng-value="0">
-                                    Nữ
-                                </option>
-                                </select></td>
+                            <td>Loại Phòng:</td>
+                            <td>
+                                <select ng-model="loaiphong" class="form-control">
+                                    <option ng-value="1">
+                                        Nam
+                                    </option>
+                                    <option ng-value="0">
+                                        Nữ
+                                    </option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td>Số Lượng Người</td>
                             <td><input type="text" class="form-control" ng-model="kichthuoc" /></td>
                         </tr>
-                      
+
 
 
 
@@ -106,7 +180,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
-                    <button type="button" class="btn btn-primary" ng-click="AddDanhMucKho()">Lưu</button>
+                    <button type="button" class="btn btn-primary" ng-click="AddPhongNgu()">Lưu</button>
                 </div>
             </div>
         </div>
@@ -163,7 +237,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-success" ng-click="SaveDanhMuc(dm)">Cập nhật</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-success" ng-click="SavePhongNgu(dm)">Cập nhật</button>
                     <button type="button" data-dismiss="modal" class="btn btn-danger"><img src="~/Content/Images/icon/none.png" width="20" style="position:relative;top:3px;margin-right:5px" />Exit</button>
                 </div>
             </div>
